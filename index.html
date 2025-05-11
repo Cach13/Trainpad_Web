@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrAInPad - Planes de Suscripción</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --gradient-start: #1e3a8a;
+            --gradient-end: #3b82f6;
+            --primary: #2563eb;
+            --secondary: #06b6d4;
+            --surface: #ffffff;
+            --surface-variant: #f5f5f5;
+            --on-surface: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: var(--on-surface);
+        }
+
+        .bg-gradient {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px rgba(30, 58, 138, 0.1);
+        }
+
+        .selected-card {
+            border: 2px solid var(--primary);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .benefit-icon {
+            color: var(--primary);
+        }
+
+        .toggle-button {
+            transition: all 0.3s ease;
+        }
+
+        .toggle-button.active {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+        }
+
+        .animated-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
+
+        .plan-colors-free {
+            --plan-gradient-start: #64748b;
+            --plan-gradient-end: #94a3b8;
+        }
+
+        .plan-colors-basic {
+            --plan-gradient-start: #0ea5e9;
+            --plan-gradient-end: #38bdf8;
+        }
+
+        .plan-colors-pro {
+            --plan-gradient-start: #06b6d4;
+            --plan-gradient-end: #0ea5e9;
+        }
+
+        .plan-colors-premium {
+            --plan-gradient-start: #1d4ed8;
+            --plan-gradient-end: #3b82f6;
+        }
+
+        .plan-colors-professional {
+            --plan-gradient-start: #0891b2;
+            --plan-gradient-end: #06b6d4;
+        }
+
+        .plan-icon {
+            background: linear-gradient(135deg, var(--plan-gradient-start), var(--plan-gradient-end));
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .plan-price {
+            color: var(--plan-gradient-end);
+            font-size: 1.75rem;
+        }
+
+        .plan-button {
+            border: 1px solid var(--plan-gradient-end);
+            color: var(--plan-gradient-end);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .plan-button:hover, .plan-button.selected {
+            background: linear-gradient(135deg, var(--plan-gradient-start), var(--plan-gradient-end));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-shadow {
+            text-shadow: 1px 1px 2px rgba(30, 58, 138, 0.2);
+        }
+
+        .popular-badge {
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .plan-card {
+                margin-bottom: 2rem;
+            }
+            
+            .toggle-button {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.25rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="antialiased">
+    <header class="bg-white shadow-sm fixed w-full top-0 z-10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <button id="back-button" class="mr-4 bg-opacity-20 p-2 rounded-xl" style="background-color: rgba(37, 99, 235, 0.2);">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="var(--primary)">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </button>
+                <div class="flex items-center">
+                    <div class="bg-gradient w-10 h-10 rounded-lg flex items-center justify-center shadow-md">
+                        <span class="text-white font-bold text-xl">T</span>
+                    </div>
+                    <h1 class="ml-3 text-xl font-bold text-gray-800">Planes de Suscripción</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 mt-20">
+        <section class="mb-12 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-3">Elige tu plan perfecto</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Selecciona el plan que mejor se adapte a tus necesidades de entrenamiento y seguimiento postural</p>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-8">
+            <!-- FREE Plan -->
+            <div class="card bg-white plan-colors-free" id="plan-free">
+                <div class="p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="plan-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </div>
+                            <h3 class="ml-3 text-xl font-bold text-gray-800">FREE</h3>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <p class="text-4xl font-bold plan-price">$0.00</p>
+                        <p class="text-sm text-gray-500 mt-1">para siempre</p>
+                    </div>
+
+                    <hr class="my-6 border-gray-200">
+
+                    <div class="flex-grow">
+                        <p class="font-semibold text-gray-700 mb-3">Incluye:</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Corrección básica de postura</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Registro de 3 rutinas</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Sugerencias generales</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Métricas elementales</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Contiene anuncios</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-8">
+                        <button class="plan-button w-full py-3 rounded-lg font-bold text-center" data-plan="free">Empezar ahora</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Plan -->
+            <div class="card bg-white plan-colors-basic" id="plan-basic">
+                <div class="p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="plan-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <h3 class="ml-3 text-xl font-bold text-gray-800">Básico</h3>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="bg-gray-100 rounded-full p-1 flex">
+                            <button class="toggle-button active rounded-full py-2 flex-1 text-center text-sm font-medium" data-period="monthly" data-plan="basic">Mensual</button>
+                            <button class="toggle-button rounded-full py-2 flex-1 text-center text-sm font-medium" data-period="trimestral" data-plan="basic">Trimestral</button>
+                            <button class="toggle-button rounded-full py-2 flex-1 text-center text-sm font-medium" data-period="annual" data-plan="basic">Anual</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <p class="text-4xl font-bold plan-price">$165<span class="text-lg">/mes</span></p>
+                        <p class="text-xs text-green-500 hidden savings-text mt-1" id="basic-savings"></p>
+                    </div>
+
+                    <hr class="my-6 border-gray-200">
+
+                    <div class="flex-grow">
+                        <p class="font-semibold text-gray-700 mb-3">Incluye:</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Corrección de postura mejorada</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>5 espacios para rutinas</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Sugerencias inteligentes</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Métricas avanzadas</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Contiene anuncios</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-8">
+                        <button class="plan-button w-full py-3 rounded-lg font-bold text-center" data-plan="basic">Seleccionar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="card bg-white plan-colors-pro" id="plan-pro">
+                <div class="p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="plan-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="ml-3 text-xl font-bold text-gray-800">Pro</h3>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="bg-gray-100 rounded-full p-1 flex">
+                            <button class="toggle-button active rounded-full py-2 flex-1 text-center text-sm font-medium" data-period="monthly" data-plan="pro">Mensual</button>
+                            <button class="toggle-button rounded-full py-2 flex-1 text-center text-sm font-medium" data-period="trimestral" data-plan="pro">Trimestral</button>
+                            <button class="toggle-button rounded-full py-2 flex-1 text-center text-sm font-medium" data-period="annual" data-plan="pro">Anual</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <p class="text-4xl font-bold plan-price">$190<span class="text-lg">/mes</span></p>
+                        <p class="text-xs text-green-500 hidden savings-text mt-1" id="pro-savings"></p>
+                    </div>
+
+                    <hr class="my-6 border-gray-200">
+
+                    <div class="flex-grow">
+                        <p class="font-semibold text-gray-700 mb-3">Incluye:</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Corrección completa de postura</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Rutinas ilimitadas</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Asistente Trainy (básico)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Panel de métricas avanzadas</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Sin anuncios</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-8">
+                        <button class="plan-button w-full py-3 rounded-lg font-bold text-center" data-plan="pro">Seleccionar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="card bg-white plan-colors-premium animated-pulse" id="plan-premium">
+                <div class="p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="plan-icon w-12 h-12 rounded-lg flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                </svg>
+                            </div>
+                            <h3 class="ml-3 text-xl font-bold text-gray-800">Premium</h3>
+                        </div>
+                        <div class="popular-badge px-3 py-1 rounded-full text-xs">
+                            Más popular
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="bg-gray-100 rounded-full p-1 flex">
+                            <button class="toggle-button active rounded-full py-2 flex-1 text-center text-sm font-medium" data-period="monthly" data-plan="premium">Mensual</button>
+                            <button class="toggle-button rounded-full py-2 flex-1 text-center text-sm font-medium" data-period="trimestral" data-plan="premium">Trimestral</button>
+                            <button class="toggle-button rounded-full py-2 flex-1 text-center text-sm font-medium" data-period="annual" data-plan="premium">Anual</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <p class="text-4xl font-bold plan-price">$240<span class="text-lg">/mes</span></p>
+                        <p class="text-xs text-green-500 hidden savings-text mt-1" id="premium-savings"></p>
+                    </div>
+
+                    <hr class="my-6 border-gray-200">
+
+                    <div class="flex-grow">
+                        <p class="font-semibold text-gray-700 mb-3">Incluye:</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Acceso completo a todo el contenido</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Seguimiento personalizado</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Programas ilimitados</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Asistente Trainy (Premium)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Exportación de datos</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Soporte prioritario</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-8">
+                        <button class="plan-button w-full py-3 rounded-lg font-bold text-center" data-plan="premium">Seleccionar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Plan (Full width below) -->
+        <div class="mt-8">
+            <div class="card bg-white plan-colors-professional" id="plan-professional">
+                <div class="p-8">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div class="flex items-center mb-4 md:mb-0">
+                            <div class="plan-icon w-14 h-14 rounded-lg flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-2xl font-bold text-gray-800">Profesional</h3>
+                                <p class="text-gray-600">Para gimnasios y entrenadores</p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center md:text-right">
+                            <p class="text-3xl font-bold plan-price">Personalizado</p>
+                            <button class="plan-button mt-4 px-8 py-3 rounded-lg font-bold" data-plan="professional">Contactar ventas</button>
+                        </div>
+                    </div>
+
+                    <hr class="my-6 border-gray-200">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div>
+                            <p class="font-semibold text-gray-700 mb-3">Incluye:</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Todo lo de Premium</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Múltiples usuarios</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <ul class="space-y-3 mt-8 md:mt-0">
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Paneles personalizados</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>API de integración</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Dashboard avanzado</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Marca personalizada</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <ul class="space-y-3 mt-8 md:mt-0">
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Analíticas avanzadas</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 benefit-icon mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Soporte dedicado 24/7</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="my-12 bg-white rounded-xl shadow-sm p-8">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Preguntas frecuentes</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-semibold text-lg text-gray-800 mb-2">¿Puedo cambiar de plan en cualquier momento?</h4>
+                    <p class="text-gray-600">Sí, puedes actualizar o bajar de plan en cualquier momento. Los cambios se aplicarán en tu próximo ciclo de facturación.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg text-gray-800 mb-2">¿Hay algún periodo de prueba?</h4>
+                    <p class="text-gray-600">Ofrecemos una prueba gratuita de 7 días para los planes Básico, Pro y Premium para que puedas probar todas las funcionalidades.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg text-gray-800 mb-2">¿Cómo funciona la facturación?</h4>
+                    <p class="text-gray-600">La facturación se realiza de forma automática según el ciclo que hayas elegido. Puedes cancelar tu suscripción en cualquier momento desde tu perfil.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg text-gray-800 mb-2">¿Qué métodos de pago aceptan?</h4>
+                    <p class="text-gray-600">Aceptamos todas las tarjetas de crédito/débito principales, PayPal y transferencias bancarias para el plan Profesional.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gradient py-8 mt-12">
+        <div class="container mx-auto px-4 text-center text-white">
+            <div class="flex justify-center items-center mb-4">
+                <div class="bg-white bg-opacity-20 w-10 h-10 rounded-lg flex items-center justify-center shadow-md">
+                    <span class="text-white font-bold text-xl">T</span>
+                </div>
+                <h2 class="ml-3 text-xl font-bold">TrAInPad</h2>
+            </div>
+            <p>&copy; 2025 TrAInPad. Todos los derechos reservados.</p>
+            <div class="mt-4 flex flex-wrap justify-center gap-4">
+                <a href="#" class="hover:underline text-sm">Términos y condiciones</a>
+                <a href="#" class="hover:underline text-sm">Política de privacidad</a>
+                <a href="#" class="hover:underline text-sm">Contacto</a>
+                <a href="#" class="hover:underline text-sm">Soporte</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle between monthly/trimestral/annual billing
+            const toggleButtons = document.querySelectorAll('.toggle-button');
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const plan = this.getAttribute('data-plan');
+                    const period = this.getAttribute('data-period');
+                    const planButtons = document.querySelectorAll(`[data-plan="${plan}"][data-period]`);
+                    
+                    planButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    
+                    // Update pricing based on selected period
+                    updatePricing(plan, period);
+                });
+            });
+
+            // Select plan
+            const planButtons = document.querySelectorAll('button[data-plan]');
+            planButtons.forEach(button => {
+                if (!button.hasAttribute('data-period')) {
+                    button.addEventListener('click', function() {
+                        const plan = this.getAttribute('data-plan');
+                        selectPlan(plan);
+                    });
+                }
+            });
+
+            // Back button
+            document.getElementById('back-button').addEventListener('click', function() {
+                // Navigate back or to a specific page
+                // window.history.back();
+                alert('Regresar a la página anterior');
+            });
+
+            // Initialize pricing
+            initializePricing();
+        });
+
+        function initializePricing() {
+            // Initial prices for each plan and period
+            const prices = {
+                'basic': {
+                    'monthly': '$165<span class="text-lg">/mes</span>',
+                    'trimestral': '$450<span class="text-lg">/trim</span>',
+                    'annual': '$1,485<span class="text-lg">/año</span>'
+                },
+                'pro': {
+                    'monthly': '$190<span class="text-lg">/mes</span>',
+                    'trimestral': '$513<span class="text-lg">/trim</span>',
+                    'annual': '$1,710<span class="text-lg">/año</span>'
+                },
+                'premium': {
+                    'monthly': '$240<span class="text-lg">/mes</span>',
+                    'trimestral': '$648<span class="text-lg">/trim</span>',
+                    'annual': '$2,160<span class="text-lg">/año</span>'
+                }
+            };
+
+            // Calculate savings
+            const savings = {
+                'basic': {
+                    'trimestral': 'Ahorras $45 (10%)',
+                    'annual': 'Ahorras $495 (25%)'
+                },
+                'pro': {
+                    'trimestral': 'Ahorras $57 (10%)',
+                    'annual': 'Ahorras $570 (25%)'
+                },
+                'premium': {
+                    'trimestral': 'Ahorras $72 (10%)',
+                    'annual': 'Ahorras $720 (25%)'
+                }
+            };
+
+            // Set initial prices
+            document.querySelectorAll('[data-plan="basic"][data-period="monthly"]')[0].click();
+            document.querySelectorAll('[data-plan="pro"][data-period="monthly"]')[0].click();
+            document.querySelectorAll('[data-plan="premium"][data-period="monthly"]')[0].click();
+        }
+
+        function updatePricing(plan, period) {
+            // Update the price display for the selected plan and period
+            const prices = {
+                'basic': {
+                    'monthly': '$165<span class="text-lg">/mes</span>',
+                    'trimestral': '$450<span class="text-lg">/trim</span>',
+                    'annual': '$1,485<span class="text-lg">/año</span>'
+                },
+                'pro': {
+                    'monthly': '$190<span class="text-lg">/mes</span>',
+                    'trimestral': '$513<span class="text-lg">/trim</span>',
+                    'annual': '$1,710<span class="text-lg">/año</span>'
+                },
+                'premium': {
+                    'monthly': '$240<span class="text-lg">/mes</span>',
+                    'trimestral': '$648<span class="text-lg">/trim</span>',
+                    'annual': '$2,160<span class="text-lg">/año</span>'
+                }
+            };
+
+            // Calculate savings
+            const savings = {
+                'basic': {
+                    'monthly': '',
+                    'trimestral': 'Ahorras $45 (10%)',
+                    'annual': 'Ahorras $495 (25%)'
+                },
+                'pro': {
+                    'monthly': '',
+                    'trimestral': 'Ahorras $57 (10%)',
+                    'annual': 'Ahorras $570 (25%)'
+                },
+                'premium': {
+                    'monthly': '',
+                    'trimestral': 'Ahorras $72 (10%)',
+                    'annual': 'Ahorras $720 (25%)'
+                }
+            };
+
+            // Update price text
+            const priceElement = document.querySelector(`#plan-${plan} .plan-price`);
+            if (priceElement) {
+                priceElement.innerHTML = prices[plan][period];
+            }
+
+            // Update savings text
+            const savingsElement = document.getElementById(`${plan}-savings`);
+            if (savingsElement) {
+                savingsElement.innerHTML = savings[plan][period];
+                if (period === 'monthly') {
+                    savingsElement.classList.add('hidden');
+                } else {
+                    savingsElement.classList.remove('hidden');
+                }
+            }
+        }
+
+        function selectPlan(plan) {
+            // Remove selected class from all plans
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('selected-card');
+            });
+            
+            document.querySelectorAll('button[data-plan]').forEach(button => {
+                if (!button.hasAttribute('data-period')) {
+                    button.classList.remove('selected');
+                }
+            });
+            
+            // Add selected class to chosen plan
+            document.getElementById(`plan-${plan}`).classList.add('selected-card');
+            document.querySelector(`button[data-plan="${plan}"]:not([data-period])`).classList.add('selected');
+            
+            // Show confirmation or proceed to checkout
+            if (plan === 'professional') {
+                alert('Te contactaremos pronto para discutir tus necesidades específicas.');
+            } else if (plan === 'free') {
+                alert('¡Has seleccionado el plan Gratuito! Puedes comenzar a usar las funciones básicas ahora.');
+            } else {
+                alert(`Has seleccionado el plan ${plan.charAt(0).toUpperCase() + plan.slice(1)}. Continúa para completar tu suscripción.`);
+            }
+        }
+    </script>
+</body>
+</html>
